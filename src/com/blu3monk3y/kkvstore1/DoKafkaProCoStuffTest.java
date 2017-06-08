@@ -1,6 +1,7 @@
 package com.blu3monk3y.kkvstore1;
 
 import com.blu3monk3y.kkvstore.util.Consumer;
+import com.blu3monk3y.kkvstore.util.KafkaProperties;
 import com.blu3monk3y.kkvstore.util.Producer;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -22,13 +23,12 @@ public class DoKafkaProCoStuffTest {
     @Test
     public void shouldDoProdToMultiGroupsTest() throws InterruptedException {
         String topic = "test-1-shouldDoProdToMultiGroupsTest";
-        Consumer con1 = new Consumer(topic, "g1");
-        con1.start();
-        Consumer con2 = new Consumer(topic, "g2");
-        con2.start();
+        Consumer con1 = new Consumer(topic, "g1").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
+        Consumer con2 = new Consumer(topic, "g2").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
-        Producer pro = new Producer(topic, false, 100);
-        pro.start();
+        Producer pro = new Producer(topic, false, 100).
+                withServer(KafkaProperties.KAFKA_SERVER_URL).
+                withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
 
         int waited = 0;
@@ -49,12 +49,12 @@ public class DoKafkaProCoStuffTest {
     public void shouldDoProdCosTest() throws InterruptedException {
 
         String topic = "test-123-SIMPLE";
-        Consumer con = new Consumer(topic, "SIMPLE-g1");
-        con.start();
+        Consumer con = new Consumer(topic, "SIMPLE-g1").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
         Thread.sleep(10000);
 
-        Producer pro = new Producer(topic, false, 100);
-        pro.start();
+        Producer pro = new Producer(topic, false, 100).
+                withServer(KafkaProperties.KAFKA_SERVER_URL).
+                withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
         System.out.println("producer running =======================");
 

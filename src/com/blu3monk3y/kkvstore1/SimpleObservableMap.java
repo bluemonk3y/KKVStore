@@ -1,6 +1,7 @@
 package com.blu3monk3y.kkvstore1;
 
 import com.blu3monk3y.kkvstore.util.Consumer;
+import com.blu3monk3y.kkvstore.util.KafkaProperties;
 import com.blu3monk3y.kkvstore.util.Producer;
 
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class SimpleObservableMap<K, V>  {
         V notify(K k, V v);
     }
 
-    public SimpleObservableMap(String topic, String consumerGroup){
+    public SimpleObservableMap(String topic, String consumerGroup, String server, int port){
         con = new Consumer<K, V>(topic, consumerGroup) {
             @Override
             public void handle(K key, V value, long offset) {
@@ -56,10 +57,8 @@ public class SimpleObservableMap<K, V>  {
                     }
                 }
             }
-        };
-        pro = new Producer(topic, false, 100);
-
-        con.start();
+        }.withServer(server).withPort(port).create();
+        pro = new Producer(topic, false, 100).withServer(server).withPort(port).create();
     }
 
 

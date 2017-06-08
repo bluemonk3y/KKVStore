@@ -1,5 +1,6 @@
 package com.blu3monk3y.kkvstore1;
 
+import com.blu3monk3y.kkvstore.util.KafkaProperties;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class SimpleObservableMapTest {
     @Test
     public void putGetTest() throws InterruptedException {
 
-        SimpleObservableMap<String, String> map = new SimpleObservableMap<>("test-123", "g1");
+        SimpleObservableMap<String, String> map = new SimpleObservableMap<>("test-123", "g1", KafkaProperties.KAFKA_SERVER_URL, KafkaProperties.KAFKA_SERVER_PORT);
         String value = new Date(). toString() + "value-1-putGetTest";
 
         System.out.println("NewMap:" + map.toString());
@@ -36,7 +37,7 @@ public class SimpleObservableMapTest {
 
         receivedMsgs = new CountDownLatch(1);
 
-        SimpleObservableMap<String, String> map = new SimpleObservableMap<>("test-1", "g1");
+        SimpleObservableMap<String, String> map = new SimpleObservableMap<>("test-1", "g1", KafkaProperties.KAFKA_SERVER_URL, KafkaProperties.KAFKA_SERVER_PORT);
 
         map.registerObserver(new SimpleObservableMap.Observer<String, String>() {
             @Override

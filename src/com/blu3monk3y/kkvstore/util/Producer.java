@@ -14,22 +14,47 @@ import java.util.concurrent.ExecutionException;
  * Created by navery on 18/05/2017.
  */
 public class Producer<K, V> extends Thread {
-    private final KafkaProducer<K, V> producer;
+    private KafkaProducer<K, V> producer;
     private final String topic;
     private final Boolean isAsync;
     private final int maxMessages;
+    private String server = "none";
+    private int port = -1;
 
     public Producer(String topic, Boolean isAsync, int maxMessages) {
         this.maxMessages = maxMessages;
+        this.topic = topic;
+        this.isAsync = isAsync;
+    }
+    public Producer create() {
         Properties props = new Properties();
-        props.put("bootstrap.servers", KafkaProperties.KAFKA_SERVER_URL + ":" + KafkaProperties.KAFKA_SERVER_PORT);
+        if (server.equals("none")) throw new RuntimeException("Server not specified, i.e. producer(...).withServer(" + KafkaProperties.KAFKA_SERVER_URL + ")");
+        if (port == -1) throw new RuntimeException("Port not specified");
+
+        props.put("bootstrap.servers", server + ":" + port);
         props.put("client.id", "DemoProducer");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producer = new KafkaProducer<>(props);
-        this.topic = topic;
-        this.isAsync = isAsync;
+        //this.start();
+        return this;
     }
+
+    /**
+     * KafkaProperties.KAFKA_SERVER_URL
+     */
+    public Producer withServer(String server) {
+        this.server = server;
+        return this;
+    }
+    /**
+     * KafkaProperties.KAFKA_SERVER_PORT
+     */
+    public Producer withPort(int server) {
+        this.port = server;
+        return this;
+    }
+
 
     public void run() {
         int messageNo = 1;

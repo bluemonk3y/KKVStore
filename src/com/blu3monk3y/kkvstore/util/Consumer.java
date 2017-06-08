@@ -14,18 +14,29 @@ import java.util.Properties;
 
 public class Consumer<K, V> extends ShutdownableThread {
     private static int UID =1;
+    private final String consumerGroup;
     private int id = UID++;
-    private final KafkaConsumer<K, V> consumer;
+    private KafkaConsumer<K, V> consumer;
     private final String topic;
     int msgs;
+    private String server = "none";
+    private int port = -1;
 
     public Consumer(String topic, String consumerGroup) {
         super("KafkaConsumerExample", false);
+        this.consumerGroup = consumerGroup;
         log("Created");
+        this.topic = topic;
+    }
+    public Consumer create() {
+
+        if (server.equals("none")) throw new RuntimeException("Server not specified, i.e. producer(...).withServer(" + KafkaProperties.KAFKA_SERVER_URL + ")");
+        if (port == -1) throw new RuntimeException("Port not specified");
+
+        log("reading data from:" + this.topic);
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.KAFKA_SERVER_URL + ":" + KafkaProperties.KAFKA_SERVER_PORT);
-       //N3il0517
-         props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, server + ":" + port);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
@@ -33,9 +44,24 @@ public class Consumer<K, V> extends ShutdownableThread {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
         consumer = new KafkaConsumer<>(props);
-        this.topic = topic;
-        log("reading data from:" + this.topic);
+
         consumer.subscribe(Collections.singletonList(this.topic));
+        this.start();
+        return this;
+    }
+    /**
+     * KafkaProperties.KAFKA_SERVER_URL
+     */
+    public Consumer withServer(String server) {
+        this.server = server;
+        return this;
+    }
+    /**
+     * KafkaProperties.KAFKA_SERVER_PORT
+     */
+    public Consumer withPort(int port) {
+        this.port = port;
+        return this;
     }
 
     /**
