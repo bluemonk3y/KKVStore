@@ -18,15 +18,11 @@ package com.blu3monk3y.kstreams;
  */
 
 
-import java.lang.management.ManagementFactory;
-import java.util.Locale;
-import java.util.Properties;
-
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.ProcessorSupplier;
@@ -34,6 +30,10 @@ import org.apache.kafka.streams.processor.TopologyBuilder;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.Stores;
+
+import java.lang.management.ManagementFactory;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Demonstrates, using the low-level Processor APIs, how to implement the WordCount program
@@ -47,7 +47,7 @@ import org.apache.kafka.streams.state.Stores;
  * bin/kafka-topics.sh --create ...), and write some data to the input topic (e.g. via
  * bin/kafka-console-producer.sh). Otherwise you won't see any data arriving in the output topic.
  */
-public class WordCountProcessorDemo {
+public class DistributingWordCountProcessorDemo {
 
     private static class MyProcessorSupplier implements ProcessorSupplier<String, String> {
 
