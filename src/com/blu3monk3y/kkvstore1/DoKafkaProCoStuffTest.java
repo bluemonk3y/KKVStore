@@ -30,6 +30,7 @@ public class DoKafkaProCoStuffTest {
                 withServer(KafkaProperties.KAFKA_SERVER_URL).
                 withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
+        pro.start();
 
         int waited = 0;
         int pollPeriod = 100;
@@ -46,7 +47,7 @@ public class DoKafkaProCoStuffTest {
 
     }
     @Test
-    public void shouldDoProdCosTest() throws InterruptedException {
+    public void shouldDoProdCosTest() throws Exception {
 
         String topic = "test-123-SIMPLE";
         Consumer con = new Consumer(topic, "SIMPLE-g1").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
@@ -56,6 +57,8 @@ public class DoKafkaProCoStuffTest {
                 withServer(KafkaProperties.KAFKA_SERVER_URL).
                 withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
+        //pro.start();
+        pro.sendMessage("Test-msg", "value");
         System.out.println("producer running =======================");
 
         int waited = 0;
@@ -67,6 +70,7 @@ public class DoKafkaProCoStuffTest {
         Thread.sleep(1000);
 
         System.out.println("msgs consumed:" + con.msgs());
+
 
 
         con.shutdown();

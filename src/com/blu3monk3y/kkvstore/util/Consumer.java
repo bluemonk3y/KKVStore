@@ -1,10 +1,13 @@
 package com.blu3monk3y.kkvstore.util;
 
 
+import com.blu3monk3y.kkvstore1.SimpleObservableMap;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.rmi.server.UID;
 import java.text.SimpleDateFormat;
@@ -13,6 +16,8 @@ import java.util.Date;
 import java.util.Properties;
 
 public class Consumer<K, V> extends ShutdownableThread {
+    private static final Logger log = LoggerFactory.getLogger(Consumer.class);
+
     private static int UID =1;
     private final String consumerGroup;
     private int id = UID++;
@@ -23,7 +28,7 @@ public class Consumer<K, V> extends ShutdownableThread {
     private int port = -1;
 
     public Consumer(String topic, String consumerGroup) {
-        super("KafkaConsumerExample", false);
+        super("Consumer", false);
         this.consumerGroup = consumerGroup;
         log("Created");
         this.topic = topic;
@@ -100,6 +105,6 @@ public class Consumer<K, V> extends ShutdownableThread {
     }
 
     public void log(String msg) {
-        System.out.println(SimpleDateFormat.getInstance().format(new Date()) + " Consumer:[" + id + "]:" + msg);
+        log.info(msg);
     }
 }

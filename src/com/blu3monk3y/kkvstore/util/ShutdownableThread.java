@@ -6,13 +6,15 @@ package com.blu3monk3y.kkvstore.util;
 
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.*;
 
-import org.apache.kafka.common.internals.FatalExitError;
-import org.apache.kafka.common.utils.Exit;
-
 public abstract class ShutdownableThread extends Thread {
+    private static final Logger log = LoggerFactory.getLogger(ShutdownableThread.class);
+
     private final boolean isInterruptible;
     //    extends Thread(name) with Logging {
     AtomicBoolean isRunning = new AtomicBoolean(true);
@@ -50,11 +52,11 @@ public abstract class ShutdownableThread extends Thread {
             // clean exit
             info("cleaning up");
             shutdownClientCode();
-        } catch (FatalExitError e) {
+        } catch (Error e) {
             isRunning.set(false);
             shutdownLatch.countDown();
             System.out.println("Stopped");
-            Exit.exit(e.statusCode());
+            System.exit(-1);
         } catch( Throwable e) {
             if (e instanceof  InterruptedException) {
              // nada
@@ -93,7 +95,7 @@ public abstract class ShutdownableThread extends Thread {
     };
 
     protected void info(String msg) {
-        System.out.println(getClass().getSimpleName() + ":" + msg);
+        log.info(msg);
     }
 
 }

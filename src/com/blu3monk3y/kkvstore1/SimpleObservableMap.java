@@ -3,6 +3,8 @@ package com.blu3monk3y.kkvstore1;
 import com.blu3monk3y.kkvstore.util.Consumer;
 import com.blu3monk3y.kkvstore.util.KafkaProperties;
 import com.blu3monk3y.kkvstore.util.Producer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +17,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class SimpleObservableMap<K, V>  {
 
+    private static final Logger log = LoggerFactory.getLogger(SimpleObservableMap.class);
     /**
      * Hooks into kafka pro-co for persistence
      */

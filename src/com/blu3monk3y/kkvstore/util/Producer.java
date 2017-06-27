@@ -4,6 +4,8 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.concurrent.ExecutionException;
  * Created by navery on 18/05/2017.
  */
 public class Producer<K, V> extends Thread {
+    private static final Logger log = LoggerFactory.getLogger(Producer.class);
+
     private KafkaProducer<K, V> producer;
     private final String topic;
     private final Boolean isAsync;
@@ -78,12 +82,13 @@ public class Producer<K, V> extends Thread {
     }
 
     public void sendMessage(K key, V value) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(topic,  key, value)).get();
-        log("Sent message: (" + value + ")");
+        log("Sending.... message: (" + value + ")");
+        RecordMetadata recordMetadata = producer.send(new ProducerRecord<>(topic, key, value)).get();
+        log("Sent message: (" + value + "): record:" + recordMetadata);
     }
 
     protected void log(String msg) {
-        System.out.println(SimpleDateFormat.getInstance().format(new Date()) + " Producer:" + msg);
+        log.info(msg);
     }
 }
 
