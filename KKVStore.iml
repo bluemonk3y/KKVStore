@@ -14,5 +14,7 @@
     <orderEntry type="library" name="org.apache.kafka:kafka-clients:0.10.2.1" level="project" />
     <orderEntry type="library" name="tools" level="project" />
     <orderEntry type="library" name="org.apache.logging.log4j:log4j-core:2.7" level="project" />
+    <orderEntry type="library" name="kafka-streams-0.10.2.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.rocksdb:rocksdbjni:5.4.5" level="project" />
   </component>
 </module>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.rocksdb:rocksdbjni:5.4.5" type="repository">
+    <properties maven-id="org.rocksdb:rocksdbjni:5.4.5" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/rocksdb/rocksdbjni/5.4.5/rocksdbjni-5.4.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
