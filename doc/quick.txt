@@ -11,3 +11,16 @@ ksql> SELECT * FROM ORDERS;
 
 #perform an analytic
 ksql> SELECT itemid, sum(orderunits) FROM orders WINDOW TUMBLING ( size 30 second) group by itemid;
+
+
+## twitter
+#topic
+ksql> CREATE TOPIC tweets_topic WITH (format = 'json', kafka_topic='tweets_topic_json');
+
+#topic content - ie. stream
+ksql> CREATE STREAM tweets (ordertime bigint, orderid bigint, itemid varchar, orderunits double, arraycol array<double>, mapcol map<varchar, double>) WITH (topicname = 'orders_topic' , key='orderid');
+
+ksql> SELECT * FROM ORDERS;
+
+#perform an analytic
+ksql> SELECT itemid, sum(orderunits) FROM orders WINDOW TUMBLING ( size 30 second) group by itemid;
