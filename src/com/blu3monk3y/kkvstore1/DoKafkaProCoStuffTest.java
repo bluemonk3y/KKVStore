@@ -22,11 +22,11 @@ public class DoKafkaProCoStuffTest {
 
     @Test
     public void shouldDoProdToMultiGroupsTest() throws InterruptedException {
-        String topic = "test-1-shouldDoProdToMultiGroupsTest";
+        String topic = "test-2";
         Consumer con1 = new Consumer(topic, "g1").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
-        Consumer con2 = new Consumer(topic, "g2").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
+        Consumer con2 = new Consumer(topic, "g1").withServer(KafkaProperties.KAFKA_SERVER_URL).withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
-        Producer pro = new Producer(topic, false, 100).
+        Producer pro = new Producer(topic, false, 10).
                 withServer(KafkaProperties.KAFKA_SERVER_URL).
                 withPort(KafkaProperties.KAFKA_SERVER_PORT).create();
 
@@ -40,8 +40,8 @@ public class DoKafkaProCoStuffTest {
 
         Thread.sleep(1000);
 
-        System.out.println("Got:" + con1.msgs() + " ," + con2.msgs());
-        assertThat("messages were received by both grps", con1.msgs() > 0 && con2.msgs() > 0);
+        System.out.println(">>>>>Got:" + con1.msgs() + " ," + con2.msgs());
+        assertThat("messages were NOT received by both grps", con1.msgs() > 0 && con2.msgs() > 0);
         con1.shutdown();
         con2.shutdown();
 

@@ -1,7 +1,6 @@
 package com.blu3monk3y.kkvstore1;
 
 import com.blu3monk3y.kkvstore.util.Consumer;
-import com.blu3monk3y.kkvstore.util.KafkaProperties;
 import com.blu3monk3y.kkvstore.util.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,7 @@ public class SimpleObservableMap<K, V>  {
     public SimpleObservableMap(String topic, String consumerGroup, String server, int port){
         con = new Consumer<K, V>(topic, consumerGroup) {
             @Override
-            public void handle(K key, V value, long offset) {
+            public void handle(String topic, int partition, long timestamp, K key, V value, long offset) {
 
                 map.put(key, value);
                 // err - iterate observers - barf

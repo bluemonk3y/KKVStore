@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
  * Created by navery on 18/05/2017.
  */
 public class Producer<K, V> extends Thread {
-    private static final Logger log = LoggerFactory.getLogger(Producer.class);
+    private static final Logger log = LoggerFactory.getLogger(Producer.class.getSimpleName());
 
     private KafkaProducer<K, V> producer;
     private final String topic;

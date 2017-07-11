@@ -1,7 +1,6 @@
 package com.blu3monk3y.kkvstore.util;
 
 
-import com.blu3monk3y.kkvstore1.SimpleObservableMap;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -9,18 +8,16 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.rmi.server.UID;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Properties;
 
 public class Consumer<K, V> extends ShutdownableThread {
-    private static final Logger log = LoggerFactory.getLogger(Consumer.class);
+    private static final Logger log = LoggerFactory.getLogger(Consumer.class.getSimpleName());
 
     private static int UID =1;
     private final String consumerGroup;
-    private int id = UID++;
+    private int id;
     private KafkaConsumer<K, V> consumer;
     private final String topic;
     int msgs;
@@ -28,7 +25,8 @@ public class Consumer<K, V> extends ShutdownableThread {
     private int port = -1;
 
     public Consumer(String topic, String consumerGroup) {
-        super("Consumer", false);
+        super("Consumer." + topic + "." + consumerGroup +"." + UID++, false);
+        this.id = UID -1;
         this.consumerGroup = consumerGroup;
         log("Created");
         this.topic = topic;
@@ -71,19 +69,23 @@ public class Consumer<K, V> extends ShutdownableThread {
 
     /**
      * Callback to client code
+     * @param topic
+     * @param partition
+     * @param timestamp
      * @param key
      * @param value
      * @param offset
      */
-    public void handle(K key, V value, long offset) {
-        log(this.toString() + " Received message: (" + key + ", " + value + ") at offset " + offset);
+    int handled = 0;
+    public void handle(String topic, int partition, long timestamp, K key, V value, long offset) {
+        log(" Topic:" + topic + " partition:" + partition + " time:" + new Date(timestamp) +  " handled:" + handled++ + " Msg: (" + key + ", " + value + ") at offset " + offset);
     }
 
     @Override
     public void doWork() {
         ConsumerRecords<K, V> records = consumer.poll(1000);
         for (ConsumerRecord<K, V> record : records) {
-            handle(record.key(), record.value(), record.offset());
+            handle(record.topic(), record.partition(), record.timestamp(), record.key(), record.value(), record.offset());
             msgs++;
         }
     }
