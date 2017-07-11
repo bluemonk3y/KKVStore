@@ -46,7 +46,7 @@ public class DataProducer {
 
     public void genericRowOrdersStreamMap(String orderKafkaTopicName) {
         long maxInterval = 10;
-        int messageCount = 1000;
+        int messageCount = 100;
 
         for(int i = 0; i < messageCount; i++) {
             long currentTime = System.currentTimeMillis();
