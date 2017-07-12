@@ -1,2 +1,4 @@
 1. need to delete topic/stream/table
 2. need to script up insert json, csv etc content
+
+// look at io.confluent.ksql.rest.server.resources.KsqlResource for command execution
