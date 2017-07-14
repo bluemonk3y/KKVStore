@@ -1,4 +1,10 @@
 1. need to delete topic/stream/table
 2. need to script up insert json, csv etc content
-
+3. How does the internal command queue distribute tasks to remote workers? does it key by command - look at CommandStore.commandProducer
 // look at io.confluent.ksql.rest.server.resources.KsqlResource for command execution
+// commands executed in KsqlParser.buildAst
+// edit sqlbase.g4 for language
+
+// hacked into CommandRunner. private void executeStatement(String statementStr, CommandId commandId)
+// to handle Stream
+INSERT INTO <tweets_topics> (ID,NAME,AGE,ADDRESS,SALARY) VALUES (1, 'Ramesh', 32, 'Ahmedabad', 2000.00 );
