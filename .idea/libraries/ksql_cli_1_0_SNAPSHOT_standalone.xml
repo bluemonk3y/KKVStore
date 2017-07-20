@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="ksql-cli-1.0-SNAPSHOT-standalone">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/ksql-cli-1.0-SNAPSHOT-standalone.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
